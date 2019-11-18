@@ -6,11 +6,11 @@
 /*   By: aadlercr <aadlercr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 15:47:26 by aadlercr          #+#    #+#             */
-/*   Updated: 2019/11/09 16:15:59 by aadlercr         ###   ########.fr       */
+/*   Updated: 2019/11/14 15:15:09 by aadlercr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "./libft/libft.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -26,7 +26,10 @@ int main(int argc, char const *argv[])
 	int ret2;
 	if (argc == 1)
 	{
-		ft_printf("\nft: 9|%+20.5f| ", 0.0);
+		ft_printf("\n|%|020s|", "Hello");
+		ft_printf("\n|%|20s|", "Hello");
+		ft_printf("\n|%*.*s|", 20, 3, "Hello");
+		printf("\n|%*.*s|", 20, 3, "Hello");
 	}
 	if (argc == 5)
 	{
@@ -51,9 +54,7 @@ int main(int argc, char const *argv[])
 	}
 	if (argc == 2)
 	{
-		ft_printf("\n~*#171n☺ ~*#181n☺ ~*#191n☺ ~*#201n☺ ~*#211n☺ ~*#231n☺ ~*#231n☺ ~*#121n☺ ~*#221n☺ ~*-");
-		ft_printf("\n~*#171n☺ ~*#181n☺ ~*#191n☺ ~*#201n☺ ~*#211n☺ ~*#231n☺ ~*#231n☺ ~*#121n☺ ~*#221n☺ ~*-");
-		ft_printf("\n~*#171n☺ ~*#181n☺ ~*#191n☺ ~*#201n☺ ~*#211n☺ ~*#231n☺ ~*#231n☺ ~*#121n☺ ~*#221n☺ ~*-");
+		((ret1 = printf("\n|unicode a?|")) == (ret2 = ft_printf("\nft: 0|%ls %lc?| ", L"ỰṄΐ𝐂𝐎𝞭𝙀", L'ᴁ') - 5)) ? 0 : printf("Invalid return 0: ft: %d vs %d", ret1, ret2);
 	}
 	if (argc == 3)
 	{
@@ -171,16 +172,35 @@ int main(int argc, char const *argv[])
 
 		((ret1 = printf("\n|%+020.6d|", 1)) == (ret2 = ft_printf("\nft:56|%+020.6d| ", 1) - 6)) ? 0 : printf("Invalid return 56 ft: %d vs %d", ret1, ret2);
 
-		
-	}
-	if (argc == 4)
-	{
-		int fd;
+		((ret1 = printf("\n|%020u|", 0)) == (ret2 = ft_printf("\nft:57|%020u| ", 0) - 6)) ? 0 : printf("Invalid return 57 ft: %d vs %d", ret1, ret2);
 
-		fd = open("output", O_RDWR | O_CREAT, 0666);
-		ret2 = ft_printf("ft:47|THIS IS A VERY LONG | |MESSAGE HELLO WORLD |    |LOREM ipsum MESSAGE | HELLO world lorem ipsum dolor sit amet THIS IS A VERY LONG | |MESSAGE HELLO WORLD |    |LOREM ipsum MESSAGE | HELLO world lorem ipsum dolor sit ametTHIS IS A VERY LONG | |MESSAGE HELLO WORLD |    |LOREM ipsum MESSAGE | HELLO world lorem ipsum dolor sit ametTHIS IS A VERY LONG | |MESSAGE HELLO WORLD |    |LOREM ipsum MESSAGE | HELLO world lorem ipsum dolor sit amet");
-		(ret1 == ret2) ? 0 : printf("Invalid return 47 ft: %d vs %d", ret1, ret2);
-	}
+		((ret1 = printf("\n|%20u|", 0)) == (ret2 = ft_printf("\nft:58|%20u| ", 0) - 6)) ? 0 : printf("Invalid return 58 ft: %d vs %d", ret1, ret2);
+		
+		((ret1 = printf("\n|%#5x|%8.d|%5.0d|", 0, 0 ,0)) == (ret2 = ft_printf("\nft:59|%#5x|%8.d|%5.0d| ", 0, 0 ,0) - 6)) ? 0 : printf("Invalid return 59 ft: %d vs %d", ret1, ret2);
+
+		((ret1 = printf("\n|%5.1u|%8p|%5.p|", 0, NULL, NULL)) == (ret2 = ft_printf("\nft:60|%5.1u|%8p|%5.p| ", 0, NULL, NULL) - 6)) ? 0 : printf("Invalid return 60 ft: %d vs %d", ret1, ret2);
+
+		((ret1 = printf("\n|%#05.13X|%4.1x|", 2411, 0)) == (ret2 = ft_printf("\nft:61|%#05.13X|%4.1x| ", 2411, 0) - 6)) ? 0 : printf("Invalid return 61 ft: %d vs %d", ret1, ret2);
+
+		((ret1 = printf("\n|%X|%x|%3u|%ld|", 111111, 111111, 51, (long)-125)) == (ret2 = ft_printf("\nft:62|%X|%x|%3u|%ld| ", 111111, 111111, 51, (long)-125) - 6)) ? 0 : printf("Invalid return 62 ft: %d vs %d", ret1, ret2);
+
+		((ret1 = printf("\n|%c%c%c%c%c%c%c%c%c%c%c|%3.c|%4c|", 'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd', 51, 55)) == (ret2 = ft_printf("%c%c%c:%o|%c%c%c%c%c%c%c%c%c%c%c|%3.c|%4c| ", '\n', 'f', 't', 51, 'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd', 51, 55) - 6)) ? 0 : printf("Invalid return 63 ft: %d vs %d", ret1, ret2);
 	
+		((ret1 = printf("\n|%-+ 6.4d|% 7d|% 5.3d|", 5, 5 , -5)) == (ret2 = ft_printf("\nft:64|%+ -6.4d|% 7d|% 5.3d| ", 5, 5 , -5) - 6)) ? 0 : printf("Invalid return 64 ft: %d vs %d", ret1, ret2);
+
+		((ret1 = printf("\n|%#10o|%#9x|", 0, 0)) == (ret2 = ft_printf("\nft:65|%#10o|%#9x| ", 0, 0) - 6)) ? 0 : printf("Invalid return 65 ft: %d vs %d", ret1, ret2);
+
+		((ret1 = printf("\n|%.14o|%#5o|", 12, 1)) == (ret2 = ft_printf("\nft:66|%.14o|%#5o| ", 12, 1) - 6)) ? 0 : printf("Invalid return 66 ft: %d vs %d", ret1, ret2);
+		
+		((ret1 = printf("\n|%06.2o|%#4o|%#-8.3o|", 0, 0, 0)) == (ret2 = ft_printf("\nft:67|%06.2o|%#4o|%#-8.3o| ", 0, 0, 0) - 6)) ? 0 : printf("Invalid return 67 ft: %d vs %d", ret1, ret2);
+
+		((ret1 = printf("\n|%#06.2x|%#04.0x|%-7.3X|", 1234, 1234, 1234)) == (ret2 = ft_printf("\nft:68|%#06.2x|%#04.0x|%-7.3X| ", 1234, 1234, 1234) - 6)) ? 0 : printf("Invalid return 68 ft: %d vs %d", ret1, ret2);
+
+		((ret1 = printf("\n|%#07o|%#4o|%#-6.3o|", 1234, 1234, 1234)) == (ret2 = ft_printf("\nft:69|%#07o|%#4o|%#-6.3o| ", 1234, 1234, 1234) - 6)) ? 0 : printf("Invalid return 69 ft: %d vs %d", ret1, ret2);
+
+		((ret1 = printf("\n|%#6o|%#6x|%#6X|", 1234, 1234, 1234)) == (ret2 = ft_printf("\nft:70|%#6o|%#6x|%#6X| ", 1234, 1234, 1234) - 6)) ? 0 : printf("Invalid return 70 ft: %d vs %d", ret1, ret2);
+
+		((ret1 = printf("\n|%#-6o|%-6x|%#-6X|", 1234, 1234, 1234)) == (ret2 = ft_printf("\nft:71|%#-6o|%-6x|%#-6X| ", 1234, 1234, 1234) - 6)) ? 0 : printf("Invalid return 71 ft: %d vs %d", ret1, ret2);
+	}
 	return 0;
-}
+} 
